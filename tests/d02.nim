@@ -1,0 +1,66 @@
+discard """
+
+  output: '''
+Part A
+8
+2278
+Part B
+'''
+"""
+
+import std/sequtils
+from std/strutils import parseInt, split
+
+type Bag = object
+    r, g, b: int
+
+type Game = object
+    idx: int
+    samples: seq[Bag]
+
+proc parseSample(raw: string): Bag =
+    result = Bag()
+    for cc in raw.split(", "):
+        var ccs = cc.split(' ')
+        var count = parseInt(ccs[0])
+        var color = ccs[1]
+        if color == "red":
+            result.r = count
+        elif color == "green":
+            result.g = count
+        elif color == "blue":
+            result.b = count
+
+proc parseGame(line: string): Game =
+    var cut = line.split(": ")
+    var idx = parseInt(cut[0].split(' ')[1])
+    result = Game(idx: idx, samples: newSeq[Bag]())
+    for sample in cut[1].split("; "):
+        result.samples.add(parseSample(sample))
+
+proc parseGames(raw: string): seq[Game] =
+    result = newSeq[Game]()
+    for line in raw.split('\n'):
+        result.add(parseGame(line))
+
+proc max(g: Game): Bag =
+    result = Bag()
+    for s in g.samples:
+        result.r = max(result.r, s.r)
+        result.g = max(result.g, s.g)
+        result.b = max(result.b, s.b)
+
+proc part_a(raw: string): int =
+    var games = parseGames(raw)
+    for game in games:
+        var m = game.max()
+        if m.r <= 12 and m.g <= 13 and m.b <= 14:
+            result += game.idx
+
+let input = readFile("input/02.txt")
+
+echo "Part A"
+echo part_a(readFile("example/02a.txt"))
+echo part_a(input)
+
+echo "Part B"
