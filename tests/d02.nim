@@ -5,6 +5,8 @@ Part A
 8
 2278
 Part B
+2286
+67953
 '''
 """
 
@@ -57,10 +59,20 @@ proc part_a(raw: string): int =
         if m.r <= 12 and m.g <= 13 and m.b <= 14:
             result += game.idx
 
+proc part_b(raw: string): int =
+    var games = parseGames(raw)
+    for game in games:
+        var m = game.max()
+        var p = m.r * m.g * m.b
+        result += p
+
+let example = readFile("example/02a.txt")
 let input = readFile("input/02.txt")
 
 echo "Part A"
-echo part_a(readFile("example/02a.txt"))
+echo part_a(example)
 echo part_a(input)
 
 echo "Part B"
+echo part_b(example)
+echo part_b(input)
