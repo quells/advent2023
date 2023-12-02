@@ -1,0 +1,23 @@
+on:
+  pull_request:
+  merge:
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        nimversion:
+          - binary:2.0.0
+        os:
+          - ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: iffy/install-nim@v5
+        with:
+          version: ${{ matrix.nimversion }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test
+        run: |
+          make test
