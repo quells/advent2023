@@ -5,8 +5,8 @@ Part A
 4361
 527144
 Part B
-123
-123
+467835
+81463996
 '''
 """
 
@@ -90,7 +90,17 @@ proc part_a(raw: string): int =
         result += n.num
 
 proc part_b(raw: string): int =
-  123
+  var s = parseSchematic(raw)
+  for j, row in s:
+    for i, cell in row:
+      if cell.k != ckSymbol or cell.sym != '*':
+        continue
+      var ns = s.neighbors(i, j)
+      if len(ns) == 2:
+        var gr = 1
+        for _, n in ns:
+          gr *= n.num
+        result += gr
 
 let example = readFile("example/03a.txt")
 let input = readFile("input/03.txt")
