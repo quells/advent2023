@@ -52,19 +52,18 @@ proc max(g: Game): Bag =
         result.g = max(result.g, s.g)
         result.b = max(result.b, s.b)
 
+proc possible(g: Game): bool =
+    var m = g.max()
+    m.r <= 12 and m.g <= 13 and m.b <= 14
+
 proc part_a(raw: string): int =
-    var games = parseGames(raw)
-    for game in games:
-        var m = game.max()
-        if m.r <= 12 and m.g <= 13 and m.b <= 14:
-            result += game.idx
+    parseGames(raw).filter(possible).foldl(a + b.idx, 0)
+
+proc power(b: Bag): int =
+    b.r * b.g * b.b
 
 proc part_b(raw: string): int =
-    var games = parseGames(raw)
-    for game in games:
-        var m = game.max()
-        var p = m.r * m.g * m.b
-        result += p
+    parseGames(raw).map(max).map(power).foldl(a + b)
 
 let example = readFile("example/02a.txt")
 let input = readFile("input/02.txt")

@@ -68,14 +68,10 @@ proc combineDigits(vs: seq[int]): int =
     result = vs[0] * 10 + vs[len(vs)-1]
 
 proc part_a(raw: string): int =
-    result = 0
-    for d in findDigits(raw).map(combineDigits):
-        result += d
+    findDigits(raw).map(combineDigits).foldl(a + b)
 
 proc part_b(raw: string): int =
-    result = 0
-    for d in findSneakyDigits(raw).map(combineDigits):
-        result += d
+    findSneakyDigits(raw).map(combineDigits).foldl(a + b)
 
 let input = readFile("input/01.txt")
 
