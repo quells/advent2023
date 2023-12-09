@@ -1,0 +1,6 @@
+// For format details, see https://aka.ms/devcontainer.json
+{
+    "features": {
+        "ghcr.io/devcontainers-contrib/features/nim-asdf:2": {}
+    }
+}
