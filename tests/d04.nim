@@ -5,13 +5,14 @@ Part A
 13
 27059
 Part B
-123
+30
 123
 '''
 """
 
 import std/sequtils
 import std/strutils
+import std/tables
 
 type
   Card = object
@@ -48,7 +49,20 @@ proc part_a(raw: string): int =
   parseCards(raw).map(score).foldl(a + b)
 
 proc part_b(raw: string): int =
-  123
+  var cards = parseCards(raw)
+  var copies = newCountTable[int]()
+  for c in cards:
+    copies[c.id] = copies[c.id] + 1
+    var s = c.score()
+    if cards.len() <= c.id + s:
+      s = cards.len() - c.id - 2
+    echo c.id, " ", s
+    echo copies[c.id]
+    for i in 1 .. s:
+      var idx = c.id + i
+      copies[idx] = copies[idx] + copies[c.id]
+  for c in copies.values():
+    result += c
 
 let example = readFile("example/04.txt")
 let input = readFile("input/04.txt")
